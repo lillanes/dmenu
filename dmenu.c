@@ -636,6 +636,8 @@ insert:
 		}
 		if (lines > 0)
 			return;
+		/* fallthrough */
+	case XK_Up:
 		if (sel && sel->left && (sel = sel->left)->right == curr) {
 			curr = prev;
 			calcoffsets();
@@ -672,6 +674,8 @@ insert:
 		}
 		if (lines > 0)
 			return;
+		/* fallthrough */
+	case XK_Down:
 		if (sel && sel->right && (sel = sel->right) == next) {
 			curr = next;
 			calcoffsets();
@@ -684,14 +688,6 @@ insert:
 		text[sizeof text - 1] = '\0';
 		cursor = strlen(text);
 		match();
-		break;
-	case XK_Up:
-		navhistory(-1);
-		buf[0]=0;
-		break;
-	case XK_Down:
-		navhistory(1);
-		buf[0]=0;
 		break;
 	}
 
