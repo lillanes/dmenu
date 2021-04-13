@@ -16,7 +16,7 @@ static const char *colors[SchemeLast][2] = {
 };
 /* -l option; if nonzero, dmenu uses vertical list with given number of lines */
 static unsigned int lines      = 0;
-static unsigned int maxhist    = 15;
+static unsigned int maxhist    = 64;
 static int histnodup           = 1;    /* is 0, record repeated histories */
 
 /*
