@@ -485,7 +485,8 @@ navhistory(int dir)
 static void
 savehistory(char *input)
 {
-	unsigned int i;
+	unsigned int i, j = 0;
+	char **newhistory;
 	FILE *fp;
 
 	if (!histfile ||
@@ -498,19 +499,29 @@ savehistory(char *input)
 	if (!fp) {
 		die("failed to open %s", histfile);
 	}
-	for (i = histsz < maxhist ? 0 : histsz - maxhist; i < histsz; i++) {
-		if (0 >= fprintf(fp, "%s\n", history[i])) {
-			die("failed to write to %s", histfile);
+
+	newhistory = calloc(histsz + 1, sizeof(char *));
+	if (!newhistory) {
+		die("failed to allocate memory");
+	}
+
+	for (i = 0; i < histsz; ++i) {
+		if (!histnodup || strcmp(input, history[i])) {
+			newhistory[j++] = history[i];
 		}
 	}
-	if (!histnodup || (histsz > 0 && strcmp(input, history[histsz-1]) != 0)) { /* TODO */
-		if (0 >= fputs(input, fp)) {
+	newhistory[j++] = input;
+
+	for (i = 0; i < j; i++) {
+		if (0 >= fprintf(fp, "%s\n", newhistory[i])) {
 			die("failed to write to %s", histfile);
 		}
 	}
 	if (fclose(fp)) {
 		die("failed to close file %s", histfile);
 	}
+
+	free(newhistory);
 
 out:
 	for (i = 0; i < histsz; i++) {
