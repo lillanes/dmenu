@@ -455,19 +455,20 @@ navhistory(int dir)
 		strncpy(def, text, sizeof(def));
 	}
 
+	len = strlen(def);
+
 	switch(dir) {
 	case 1:
-		if (histpos < histsz - 1) {
-			p = history[++histpos];
-		} else if (histpos == histsz - 1) {
+		while (histpos < histsz && fstrncmp(def, history[++histpos], len));
+		if (histpos == histsz) {
 			p = def;
-			histpos++;
+		} else {
+			p = history[histpos];
 		}
 		break;
 	case -1:
-		if (histpos > 0) {
-			p = history[--histpos];
-		}
+		while (histpos > 0 && fstrncmp(def, history[--histpos], len));
+		p = history[histpos];
 		break;
 	}
 	if (p == NULL) {
