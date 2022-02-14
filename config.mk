@@ -1,5 +1,5 @@
 # dmenu version
-VERSION = 5.0.lillanes
+VERSION = 5.1.lillanes
 
 # paths
 PREFIX =$(STOW)/dmenu
